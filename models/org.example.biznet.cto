@@ -1,0 +1,52 @@
+namespace org.example.biznet
+
+/**
+ * The asset participants will be trading.
+ * Each card has certain properties such as name,
+ * description, type, and quantity which can
+ * be used for the frontend application
+ */
+asset TradingCard identified by cardId {
+  o String cardId
+  o String cardName
+  o String cardDescription
+  o GameType cardType default="Baseball" // If no value is provided, it takes the default value
+  o Double quantity
+  o Double price default=10.0
+  o Boolean forTrade
+  --> Trader owner
+}
+
+/**
+ * THe participant model for a Trader
+ */
+participant Trader identified by traderId {
+  o String traderId
+  o String traderName
+}
+
+/**
+ * A transaction which allows Traders to buy other
+ * Traders' cards if they're available for trade
+ */
+transaction TradeCard {
+  --> TradingCard card
+}
+
+/**
+ * A notification event to be emitted whenever
+ * any card is traded
+ */
+event TradeNotification {
+  --> TradingCard card
+}
+
+/**
+ * Enumerated types are used to specify a type
+ * which can have 1 or N possible values, and nothing else.
+ */
+enum GameType {
+  o Baseball
+  o Football
+  o Cricket
+}
